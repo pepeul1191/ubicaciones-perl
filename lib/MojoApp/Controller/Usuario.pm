@@ -18,6 +18,7 @@ sub validar{
 	my $self = shift;
 	my $usuario = $self->param('usuario');
 	my $contrasenia = $self->param('contrasenia');
+        $contrasenia =~ tr/ /+/;
 	my $model = 'MojoApp::Model::Usuarios';
   	my $usuarios= $model->new();
   	my $rpta = $usuarios->validar($usuario, $contrasenia);
