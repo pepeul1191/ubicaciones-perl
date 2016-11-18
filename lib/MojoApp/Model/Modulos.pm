@@ -16,7 +16,7 @@ sub new {
 
 sub listar {
     my($self) = @_;
-    my $sth = $self->{_dbh}->prepare('SELECT * FROM modulos') 
+    my $sth = $self->{_dbh}->prepare('SELECT url, nombre FROM modulos') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
