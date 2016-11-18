@@ -30,4 +30,23 @@ sub listar {
 
     return @rpta;
 }
+
+sub validar {
+    my($self, $usuario, $contrasenia) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT COUNT(*) AS cantidad FROM usuarios WHERE usuario = ? AND contrasenia = ?')
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario );
+    $sth->bind_param( 2, $contrasenia );
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my $rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        $rpta = $ref->{'cantidad'};
+    }
+
+    $sth->finish;
+
+    return $rpta;
+}
 1;
