@@ -18,7 +18,7 @@ sub menu {
 
     for my $item (@items) {
 		if($item->{"subtitulo"} ~~ @subtitulos_temp){ 
-			my %temp_item = ( item => $item->{"item"}, subtitulo => $item->{"url"});
+			my %temp_item = ( item => $item->{"item"}, url => $item->{"url"});
 			#print("\n");print Dumper(\%temp_item);print("\n");
 			my @temp = $items_temp{$item->{"subtitulo"}};
 			@temp = @temp[0];
@@ -26,7 +26,7 @@ sub menu {
 			$items_temp{$item->{"subtitulo"}} = @temp[0];
 		}else{
 			push @subtitulos_temp, $item->{"subtitulo"};
-			my %temp_item = ( item => $item->{"item"}, subtitulo => $item->{"url"});
+			my %temp_item = ( item => $item->{"item"}, url => $item->{"url"});
 			push(my @temp, { %temp_item } );
 			$items_temp{$item->{"subtitulo"}} = [@temp];
 		}
