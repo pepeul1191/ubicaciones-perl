@@ -43,6 +43,9 @@ sub validar {
 
     while (my $ref = $sth->fetchrow_hashref()) {
         $rpta = $ref->{'cantidad'};
+        print("\n1\n");
+        print $rpta;
+        print("\n1\n");
     }
 
     $sth->finish;

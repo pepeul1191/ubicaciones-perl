@@ -1,4 +1,4 @@
-package MojoApp::Model::Modulos;
+package MojoApp::Model::Subtitulos;
 use MojoApp::Config::Database;
 
 sub new {
@@ -15,9 +15,10 @@ sub new {
 }
 
 sub listar {
-    my($self) = @_;
-    my $sth = $self->{_dbh}->prepare('SELECT id, url, nombre FROM modulos') 
+    my($self, $modulo_id) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT id, nombre FROM subtitulos WHERE  modulo_id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $modulo_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
     my @rpta;

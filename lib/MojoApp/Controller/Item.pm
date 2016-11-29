@@ -45,3 +45,16 @@ sub menu {
 
     $self->render(text => ("$json_text"));
 }
+
+sub listar {
+  	my $self = shift;
+  	my $subtitulo_id = $self->param('subtitulo_id');
+    my $model = 'MojoApp::Model::Items';
+    my $items= $model->new();
+    my @rpta = $items->listar($subtitulo_id);
+    my $json_text = to_json \@rpta;
+
+    $self->render(text => ("$json_text"));
+}
+
+1;
