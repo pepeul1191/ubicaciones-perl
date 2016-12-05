@@ -5,8 +5,21 @@ use Mojo::Base 'Mojolicious';
 sub startup {
     my $self = shift;
 
+    #inicio hook CORS
+    $self->hook(before_dispatch => sub {
+        my $c = shift;
+        $c->res->headers->header('Access-Control-Allow-Origin' => '*');
+    });
+    #fin hook CORS
+
     # Documentation browser under "/perldoc"
     $self->plugin('PODRenderer');
+
+    #inicio CORS
+    $self->plugin('SecureCORS');
+    $self->plugin('SecureCORS', { max_age => undef });
+    $self->routes->to('cors.credentials'=>1);
+    #fin CORS
 
     # Router
     my $r = $self->routes;
