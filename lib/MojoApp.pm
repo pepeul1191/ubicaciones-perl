@@ -26,10 +26,13 @@ sub startup {
 
     $r->get('/item/listar/menu/:nombreModulo')->to('item#menu');
     $r->get('/item/listar/:subtitulo_id')->to('item#listar');
+    $r->post('/item/guardar')->to('item#guardar');
 
     $r->get('/modulo/listar')->to('modulo#listar');
+    $r->post('/modulo/guardar')->to('modulo#guardar');
 
     $r->get('/subtitulo/listar/:modulo_id')->to('subtitulo#listar');
+    $r->post('/subtitulo/guardar')->to('subtitulo#guardar');
 
     $r->get('/usuario/listar')->to('usuario#listar');
     $r->post('/usuario/validar')->to('usuario#validar');

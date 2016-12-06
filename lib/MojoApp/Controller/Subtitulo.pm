@@ -15,4 +15,18 @@ sub listar {
     $self->render(text => ("$json_text"));
 }
 
+sub guardar {
+    my $self = shift;
+    print("1 +++++++++++++++++++++++++++++++++++++++++++++")
+    #my $model = 'MojoApp::Model::Modulos';
+    #my $data = $self->param('data');
+
+    #print($data);
+
+    #my @rpta = $modulos->listar();
+    #my $json_text = to_json \@rpta;
+
+    $self->render(text => ("json_text"));
+}
+
 1;

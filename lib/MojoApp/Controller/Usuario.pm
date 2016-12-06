@@ -25,3 +25,5 @@ sub validar{
 
   	$self->render(text => ("$rpta"));
 }
+
+1;
