@@ -4,8 +4,9 @@ use MojoApp::Config::Database;
 sub new {
     my $class = shift;
     my $db = 'MojoApp::Config::Database';
-  	my $odb= $db->new();
-  	my $dbh = $odb->getConnection();
+    my $odb= $db->new();
+    my $dbh = $odb->getConnection();
+    $dbh->do("PRAGMA foreign_keys = ON");
     my $self = {
         _dbh => $dbh
     };
