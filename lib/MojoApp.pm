@@ -31,6 +31,13 @@ sub startup {
     $r->get('/modulo/listar')->to('modulo#listar');
     $r->post('/modulo/guardar')->to('modulo#guardar');
 
+    $r->get('/permiso/listar')->to('permiso#listar');
+    $r->post('/permiso/guardar')->to('permiso#guardar');
+
+    $r->get('/rol/listar')->to('rol#listar');
+    $r->post('/rol/guardar')->to('rol#guardar');
+    $r->post('/rol/ascociar_permisos')->to('rol#ascociar_permisos');
+
     $r->get('/subtitulo/listar/:modulo_id')->to('subtitulo#listar');
     $r->post('/subtitulo/guardar')->to('subtitulo#guardar');
 
