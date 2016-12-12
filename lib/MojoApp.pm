@@ -33,6 +33,7 @@ sub startup {
 
     $r->get('/permiso/listar')->to('permiso#listar');
     $r->post('/permiso/guardar')->to('permiso#guardar');
+    $r->get('/item/listar_asociados/:rol_id')->to('permiso#listar_asociados');
 
     $r->get('/rol/listar')->to('rol#listar');
     $r->post('/rol/guardar')->to('rol#guardar');

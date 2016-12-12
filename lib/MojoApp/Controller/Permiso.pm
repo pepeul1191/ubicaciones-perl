@@ -73,23 +73,34 @@ sub guardar {
 sub crear {
     my($self, $nombre, $llave) = @_;
     my $model = 'MojoApp::Model::Permisos';
-    my $subtitulos= $model->new();
+    my $permisos= $model->new();
 
-    return $subtitulos->crear($nombre, $llave);
+    return $permisos->crear($nombre, $llave);
 }
 
 sub editar {
     my($self, $id, $nombre, $llave) = @_;
     my $model = 'MojoApp::Model::Permisos';
-    my $subtitulos= $model->new();
-    $subtitulos->editar($id, $nombre, $llave);
+    my $permisos= $model->new();
+    $permisos->editar($id, $nombre, $llave);
 }
 
 sub eliminar {
     my($self, $id) = @_;
     my $model = 'MojoApp::Model::Permisos';
-    my $subtitulos= $model->new();
-    $subtitulos->eliminar($id);
+    my $permisos= $model->new();
+    $permisos->eliminar($id);
+}
+
+sub listar_asociados {
+    my $self = shift;
+    my $rol_id = $self->param('rol_id');
+    my $model = 'MojoApp::Model::Permisos';
+    my $permisos= $model->new();
+    my @rpta = $permisos->listar_asociados($rol_id);
+    my $json_text = to_json \@rpta;
+
+    $self->render(text => ("$json_text"));
 }
 
 1;

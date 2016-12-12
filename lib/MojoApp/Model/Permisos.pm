@@ -66,4 +66,22 @@ sub eliminar {
     $sth->finish;
 }
 
+sub listar_asociados {
+    my($self, $rol_id) = @_;
+    my $sth = $self->{_dbh}->prepare('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $rol_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my @rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        push @rpta, $ref;
+    }
+
+    $sth->finish;
+
+    return @rpta;
+}
+
 1;
