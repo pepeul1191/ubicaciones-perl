@@ -90,4 +90,57 @@ sub eliminar {
     $roles->eliminar($id);
 }
 
+sub ascociar_permisos{
+    my $self = shift;
+    my $data = decode_json($self->param('data'));
+    my @nuevos = @{$data->{"nuevos"}};
+    my @editados = @{$data->{"editados"}};
+    my @eliminados = @{$data->{"eliminados"}};
+    my $rol_id = $data->{"extra"}->{'id_rol'};
+    my @array_nuevos;
+    my %rpta = ();
+
+    try {
+        for my $nuevo(@nuevos){
+           if ($nuevo) {
+              my $permiso_id = $nuevo->{'id'};
+              $self->crear_asociacion($rol_id, $permiso_id);
+            }
+        }
+
+        for my $permiso_id(@eliminados){
+            $self->eliminar_asociacion($rol_id, $permiso_id);
+        }
+
+        $rpta{'tipo_mensaje'} = "success";
+        my @temp = ("Se ha registrado la asociación/deasociación de los permisos al rol");
+        $rpta{'mensaje'} = [@temp];
+    } catch {
+        #warn "got dbi error: $_";
+        $rpta{'tipo_mensaje'} = "error";
+        $rpta{'mensaje'} = "Se ha producido un error en asociar/deasociar los permisos al rol";
+        my @temp = ("Se ha producido un error en asociar/deasociar los permisos al rol", "" . $_);
+        $rpta{'mensaje'} = [@temp];
+    };
+    #print("\n");print Dumper(%rpta);print("\n");
+    my $json_text = to_json \%rpta;
+    $self->render(text => ("$json_text"));
+}
+
+sub crear_asociacion {
+    my($self, $rol_id, $permiso_id) = @_;
+    my $model = 'MojoApp::Model::Roles';
+    my $roles= $model->new();
+
+    return $roles->crear_asociacion($rol_id, $permiso_id);
+}
+
+sub eliminar_asociacion {
+    my($self, $rol_id, $permiso_id) = @_;
+    my $model = 'MojoApp::Model::Roles';
+    my $roles= $model->new();
+
+    return $roles->eliminar_asociacion($rol_id, $permiso_id);
+}
+
 1;

@@ -33,7 +33,7 @@ sub startup {
 
     $r->get('/permiso/listar')->to('permiso#listar');
     $r->post('/permiso/guardar')->to('permiso#guardar');
-    $r->get('/item/listar_asociados/:rol_id')->to('permiso#listar_asociados');
+    $r->get('/permiso/listar_asociados/:rol_id')->to('permiso#listar_asociados');
 
     $r->get('/rol/listar')->to('rol#listar');
     $r->post('/rol/guardar')->to('rol#guardar');
@@ -44,6 +44,8 @@ sub startup {
 
     $r->get('/usuario/listar')->to('usuario#listar');
     $r->post('/usuario/validar')->to('usuario#validar');
+
+    $r->get('/demo')->to('demo-test#index');
 }
 
 1;

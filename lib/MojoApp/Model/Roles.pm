@@ -64,4 +64,24 @@ sub eliminar {
     $sth->finish;
 }
 
+sub crear_asociacion {
+    my($self, $rol_id, $permiso_id) = @_;
+    my $sth = $self->{_dbh}->prepare('INSERT INTO roles_permisos (rol_id, permiso_id) VALUES (?, ?)') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $rol_id);
+    $sth->bind_param( 2, $permiso_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+    $sth->finish;
+}
+
+sub eliminar_asociacion {
+    my($self, $rol_id, $permiso_id) = @_;
+    my $sth = $self->{_dbh}->prepare('DELETE FROM roles_permisos WHERE rol_id = ? AND permiso_id = ?') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $rol_id);
+    $sth->bind_param( 2, $permiso_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+    $sth->finish;
+}
+
 1;

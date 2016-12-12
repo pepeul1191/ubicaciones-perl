@@ -68,8 +68,19 @@ sub eliminar {
 
 sub listar_asociados {
     my($self, $rol_id) = @_;
-    my $sth = $self->{_dbh}->prepare('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') 
-        or die "prepare statement failed: $dbh->errstr()";
+    my $sth = $self->{_dbh}->prepare('
+        SELECT T.id AS id, T.nombre AS nombre, (CASE WHEN (P.existe = 1) THEN 1 ELSE 0 END) AS existe, T.llave AS llave FROM
+        (
+            SELECT id, nombre, llave, 0 AS existe FROM permisos
+        ) T
+        LEFT JOIN
+        (
+            SELECT P.id, P.nombre,  P.llave, 1 AS existe  FROM permisos P 
+            INNER JOIN roles_permisos RP ON P.id = RP.permiso_id
+            WHERE RP.rol_id = ?
+        ) P
+        ON T.id = P.id
+    ') or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $rol_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
