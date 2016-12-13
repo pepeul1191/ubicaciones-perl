@@ -39,7 +39,7 @@ sub menu {
 
 sub listar {
     my($self, $subtitulo_id) = @_;
-    my $sth = $self->{_dbh}->prepare('SELECT id, nombre FROM items WHERE  subtitulo_id = ?') 
+    my $sth = $self->{_dbh}->prepare('SELECT id, nombre, url FROM items WHERE  subtitulo_id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $subtitulo_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";

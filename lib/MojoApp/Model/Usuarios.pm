@@ -16,7 +16,7 @@ sub new {
 
 sub listar {
     my($self) = @_;
-    my $sth = $self->{_dbh}->prepare('SELECT * FROM usuarios LIMIT 0,10')
+    my $sth = $self->{_dbh}->prepare('SELECT U.id AS id, U.usuario AS usuario, A.momento AS momento FROM usuarios U INNER JOIN accesos A ON U.id = A.usuario_id GROUP BY U.usuario ORDER BY U.id')
         or die "prepare statement failed: $dbh->errstr()";
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
@@ -52,4 +52,25 @@ sub validar {
 
     return $rpta;
 }
+
+sub obtener_id{
+    my($self, $usuario, $contrasenia) = @_;
+    my($self) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT id FROM usuarios WHERE usuario = ? AND contrasenia = ?') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario );
+    $sth->bind_param( 2, $contrasenia );
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my @rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        push @rpta, $ref;
+    }
+
+    $sth->finish;
+
+    return @rpta;
+}
+
 1;
