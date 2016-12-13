@@ -16,7 +16,7 @@ sub new {
 
 sub listar {
     my($self) = @_;
-    my $sth = $self->{_dbh}->prepare('SELECT U.id AS id, U.usuario AS usuario, A.momento AS momento FROM usuarios U INNER JOIN accesos A ON U.id = A.usuario_id GROUP BY U.usuario ORDER BY U.id')
+    my $sth = $self->{_dbh}->prepare('SELECT U.id AS id, U.usuario AS usuario, A.momento AS momento, U.correo AS correo FROM usuarios U INNER JOIN accesos A ON U.id = A.usuario_id GROUP BY U.usuario ORDER BY U.id')
         or die "prepare statement failed: $dbh->errstr()";
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
@@ -71,6 +71,104 @@ sub obtener_id{
     $sth->finish;
 
     return @rpta;
+}
+
+sub listar_permisos {
+    my($self, $usuario_id) = @_;
+    my $sth = $self->{_dbh}->prepare('
+        SELECT T.id AS id, T.nombre AS nombre, (CASE WHEN (P.existe = 1) THEN 1 ELSE 0 END) AS existe, T.llave AS llave FROM
+        (
+            SELECT id, nombre, llave, 0 AS existe FROM permisos
+        ) T
+        LEFT JOIN
+        (
+            SELECT P.id, P.nombre,  P.llave, 1 AS existe  FROM permisos P 
+            INNER JOIN usuarios_permisos UP ON P.id = UP.permiso_id
+            WHERE UP.usuario_id = ?
+        ) P
+        ON T.id = P.id
+    ') or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my @rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        push @rpta, $ref;
+    }
+
+    $sth->finish;
+
+    return @rpta;
+}
+
+sub listar_roles {
+    my($self, $usuario_id) = @_;
+    my $sth = $self->{_dbh}->prepare('
+        SELECT T.id AS id, T.nombre AS nombre, (CASE WHEN (P.existe = 1) THEN 1 ELSE 0 END) AS existe FROM
+        (
+            SELECT id, nombre, 0 AS existe FROM roles 
+        ) T
+        LEFT JOIN
+        (
+            SELECT R.id, R.nombre, 1 AS existe  FROM roles R 
+            INNER JOIN usuarios_roles UR ON R.id = UR.rol_id
+            WHERE UR.usuario_id = ?
+        ) P
+        ON T.id = P.id
+    ') or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my @rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        push @rpta, $ref;
+    }
+
+    $sth->finish;
+
+    return @rpta;
+}
+
+sub asociar_rol {
+    my($self, $usuario_id, $rol_id) = @_;
+    my $sth = $self->{_dbh}->prepare('INSERT INTO usuarios_roles (usuario_id, rol_id) VALUES (?, ?)') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id);
+    $sth->bind_param( 2, $rol_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+    $sth->finish;
+}
+
+sub desasociar_rol {
+    my($self, $usuario_id, $rol_id) = @_;
+    my $sth = $self->{_dbh}->prepare('DELETE FROM usuarios_roles WHERE usuario_id = ? AND rol_id = ?') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id);
+    $sth->bind_param( 2, $rol_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+    $sth->finish;
+}
+
+sub asociar_permiso {
+    my($self, $usuario_id, $permiso_id) = @_;
+    my $sth = $self->{_dbh}->prepare('INSERT INTO usuarios_permisos (usuario_id, permiso_id) VALUES (?, ?)') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id);
+    $sth->bind_param( 2, $permiso_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+    $sth->finish;
+}
+
+sub desasociar_permiso {
+    my($self, $usuario_id, $permiso_id) = @_;
+    my $sth = $self->{_dbh}->prepare('DELETE FROM usuarios_permisos WHERE usuario_id = ? AND permiso_id = ?') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id);
+    $sth->bind_param( 2, $permiso_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+    $sth->finish;
 }
 
 1;

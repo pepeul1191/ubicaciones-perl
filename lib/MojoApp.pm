@@ -32,8 +32,8 @@ sub startup {
     $r->post('/modulo/guardar')->to('modulo#guardar');
 
     $r->get('/permiso/listar')->to('permiso#listar');
-    $r->post('/permiso/guardar')->to('permiso#guardar');
     $r->get('/permiso/listar_asociados/:rol_id')->to('permiso#listar_asociados');
+    $r->post('/permiso/guardar')->to('permiso#guardar');
 
     $r->get('/rol/listar')->to('rol#listar');
     $r->post('/rol/guardar')->to('rol#guardar');
@@ -44,8 +44,12 @@ sub startup {
 
     $r->get('/usuario/listar')->to('usuario#listar');
     $r->get('/usuario/listar_accesos/:usuario_id')->to('usuario#listar_accesos');
+    $r->get('/usuario/listar_permisos/:usuario_id')->to('usuario#listar_permisos');
+    $r->get('/usuario/listar_roles/:usuario_id')->to('usuario#listar_roles');
     $r->post('/usuario/validar')->to('usuario#validar');
-
+    $r->post('/usuario/asociar_permisos')->to('usuario#asociar_permisos');
+    $r->post('/usuario/asociar_roles')->to('usuario#asociar_roles');
+    
     $r->get('/demo')->to('demo-test#index');
 }
 
