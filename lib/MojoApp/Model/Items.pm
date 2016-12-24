@@ -37,6 +37,31 @@ sub menu {
     return @rpta;
 }
 
+sub listar_todos {
+    my($self) = @_;
+    my $sth = $self->{_dbh}->prepare("
+            SELECT M.nombre AS modulo , M.icono AS icono,S.nombre AS subtitulo,
+            GROUP_CONCAT(I.nombre || '::' || I.url, '||') AS items
+            FROM items I 
+            INNER JOIN subtitulos S ON I.subtitulo_id = S.id
+            INNER JOIN modulos M ON S.modulo_id = M.id
+            GROUP BY subtitulo
+            ORDER BY modulo
+        ") 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my @rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        push @rpta, $ref;
+    }
+
+    $sth->finish;
+
+    return @rpta;
+}
+
 sub listar {
     my($self, $subtitulo_id) = @_;
     my $sth = $self->{_dbh}->prepare('SELECT id, nombre, url FROM items WHERE  subtitulo_id = ?') 

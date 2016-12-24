@@ -48,9 +48,69 @@ sub menu {
     $self->render(text => ("$json_text"));
 }
 
+sub listar_todos {
+    my $self = shift;
+    my $model = 'MojoApp::Model::Items';
+    my $items= $model->new();
+    my @items = $items->listar_todos();
+    my @modulos_nombre;
+    my @modulos_iconos;
+    my %modulos_temp;
+    #print("1\n");print Dumper(@items);print("2\n");
+    for my $item(@items){
+        #my %temp = ( icono => $item->{"icono"}, subtitulo => $item->{"subtitulo"}, modulo => $item->{"modulo"}, items => $self->items_subtitulo($item->{"items"}));
+        if($item->{"modulo"} ~~ @modulos_nombre){
+            my %temp_subtitulo = ( subtitulo => $item->{"subtitulo"}, items => $self->items_subtitulo($item->{"items"}));
+           #print("\n");print Dumper(\%temp_item);print("\n");
+           my @temp = $modulos_temp{$item->{"modulo"}};
+           @temp = @temp[0];
+           push @temp[0], {%temp_subtitulo};
+           $modulos_temp{$item->{"modulo"}} = @temp[0];
+        }else{
+            push @modulos_nombre, $item->{"modulo"};
+            push @modulos_iconos, $item->{"icono"};
+            my %temp_subtitulo = ( subtitulo => $item->{"subtitulo"}, items => $self->items_subtitulo($item->{"items"}));
+            push(my @temp, { %temp_subtitulo } );
+            $modulos_temp{$item->{"modulo"}} = [@temp];
+        }
+    }
+
+    my @rpta;
+    my $k = 0;
+    for my $modulo(@modulos_nombre){
+        my %temp;
+        $temp{"modulo"} = $modulo;
+        $temp{"icono"} = @modulos_iconos[$k];
+        $temp{"subtitulos"} = $modulos_temp{$modulo};
+        $k = $k + 1;
+        #print("\n");print Dumper(%temp);print("\n");
+        push @rpta, {%temp};
+    }
+
+    my $json_text = to_json \@rpta;
+
+    $self->render(text => ("$json_text"));
+}
+
+sub items_subtitulo{
+    my($self, $items) = @_;
+    my @subtitulos= split /[||]/, $items;
+    my @items;
+    
+    for my $subtitulo(@subtitulos){
+        if($subtitulo eq ''){}else{
+            my @temp= split /[::]/, $subtitulo;
+            my %item = ( nombre => @temp[0], url => @temp[2]);
+            push @items, {%item};
+        }
+    }
+
+    return @items;
+}
+
 sub listar {
-  	my $self = shift;
-  	my $subtitulo_id = $self->param('subtitulo_id');
+    my $self = shift;
+    my $subtitulo_id = $self->param('subtitulo_id');
     my $model = 'MojoApp::Model::Items';
     my $items= $model->new();
     my @rpta = $items->listar($subtitulo_id);

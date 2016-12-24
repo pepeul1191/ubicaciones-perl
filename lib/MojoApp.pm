@@ -27,6 +27,7 @@ sub startup {
     $r->get('/estado_usuario/listar')->to('estado_usuario#listar');
 
     $r->get('/item/listar/menu/:nombreModulo')->to('item#menu');
+    $r->get('/item/listar_todos')->to('item#listar_todos');
     $r->get('/item/listar/:subtitulo_id')->to('item#listar');
     $r->post('/item/guardar')->to('item#guardar');
 
