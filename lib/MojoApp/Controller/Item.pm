@@ -60,8 +60,8 @@ sub listar_todos {
     for my $item(@items){
         #my %temp = ( icono => $item->{"icono"}, subtitulo => $item->{"subtitulo"}, modulo => $item->{"modulo"}, items => $self->items_subtitulo($item->{"items"}));
         if($item->{"modulo"} ~~ @modulos_nombre){
-            my %temp_subtitulo = ( subtitulo => $item->{"subtitulo"}, items => $self->items_subtitulo($item->{"items"}));
-           #print("\n");print Dumper(\%temp_item);print("\n");
+            my %temp_subtitulo = ( subtitulo => $item->{"subtitulo"}, items => [$self->items_subtitulo($item->{"items"})]);
+           #print("\n");print Dumper(\%temp_subtitulo );print("\n");
            my @temp = $modulos_temp{$item->{"modulo"}};
            @temp = @temp[0];
            push @temp[0], {%temp_subtitulo};
@@ -69,7 +69,8 @@ sub listar_todos {
         }else{
             push @modulos_nombre, $item->{"modulo"};
             push @modulos_iconos, $item->{"icono"};
-            my %temp_subtitulo = ( subtitulo => $item->{"subtitulo"}, items => $self->items_subtitulo($item->{"items"}));
+            my %temp_subtitulo = ( subtitulo => $item->{"subtitulo"}, items => [$self->items_subtitulo($item->{"items"})]);
+            print("\n");print Dumper(\%temp_subtitulo );print("\n");
             push(my @temp, { %temp_subtitulo } );
             $modulos_temp{$item->{"modulo"}} = [@temp];
         }
@@ -104,7 +105,6 @@ sub items_subtitulo{
             push @items, {%item};
         }
     }
-
     return @items;
 }
 
