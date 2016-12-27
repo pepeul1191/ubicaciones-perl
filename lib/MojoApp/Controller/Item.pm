@@ -70,7 +70,7 @@ sub listar_todos {
             push @modulos_nombre, $item->{"modulo"};
             push @modulos_iconos, $item->{"icono"};
             my %temp_subtitulo = ( subtitulo => $item->{"subtitulo"}, items => [$self->items_subtitulo($item->{"items"})]);
-            print("\n");print Dumper(\%temp_subtitulo );print("\n");
+            #print("\n");print Dumper(\%temp_subtitulo );print("\n");
             push(my @temp, { %temp_subtitulo } );
             $modulos_temp{$item->{"modulo"}} = [@temp];
         }
@@ -84,7 +84,6 @@ sub listar_todos {
         $temp{"icono"} = @modulos_iconos[$k];
         $temp{"subtitulos"} = $modulos_temp{$modulo};
         $k = $k + 1;
-        #print("\n");print Dumper(%temp);print("\n");
         push @rpta, {%temp};
     }
 

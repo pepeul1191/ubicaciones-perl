@@ -1,5 +1,8 @@
 package MojoApp::Config::Database;
 use DBI;
+use utf8;
+binmode STDOUT, ":encoding(utf8)";
+
 
 sub new {
     my $class = shift;

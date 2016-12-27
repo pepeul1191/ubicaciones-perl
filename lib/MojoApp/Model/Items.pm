@@ -1,5 +1,7 @@
 package MojoApp::Model::Items;
 use MojoApp::Config::Database;
+use utf8;
+binmode STDOUT, ":encoding(utf8)";
 
 sub new {
     my $class = shift;
