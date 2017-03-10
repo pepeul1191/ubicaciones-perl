@@ -31,6 +31,23 @@ sub listar {
     return @rpta;
 }
 
+sub listar_usuarios {
+    my($self) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT usuario FROM usuarios')
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my @rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        push @rpta, $ref;
+    }
+
+    $sth->finish;
+
+    return @rpta;
+}
+
 sub validar {
     my($self, $usuario, $contrasenia) = @_;
     my $sth = $self->{_dbh}->prepare('SELECT COUNT(*) AS cantidad FROM usuarios WHERE usuario = ? AND contrasenia = ?')

@@ -18,6 +18,16 @@ sub listar {
   	$self->render(text => ("$json_text"));
 }
 
+sub listar_usuarios {
+    my $self = shift;
+    my $model = 'MojoApp::Model::Usuarios';
+    my $usuarios= $model->new();
+    my @rpta = $usuarios->listar_usuarios();
+    my $json_text = to_json \@rpta;
+
+    $self->render(text => ("$json_text"));
+}
+
 sub validar{
 	my $self = shift;
 	my $usuario = $self->param('usuario');

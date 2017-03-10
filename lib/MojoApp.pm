@@ -46,6 +46,7 @@ sub startup {
     $r->post('/subtitulo/guardar')->to('subtitulo#guardar');
 
     $r->get('/usuario/listar')->to('usuario#listar');
+    $r->get('/usuario/listar_usuarios')->to('usuario#listar_usuarios');
     $r->get('/usuario/listar_accesos/:usuario_id')->to('usuario#listar_accesos');
     $r->get('/usuario/listar_permisos/:usuario_id')->to('usuario#listar_permisos');
     $r->get('/usuario/listar_roles/:usuario_id')->to('usuario#listar_roles');
