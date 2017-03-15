@@ -9,6 +9,7 @@ sub startup {
     $self->hook(before_dispatch => sub {
         my $c = shift;
         $c->res->headers->header('Access-Control-Allow-Origin' => '*');
+        $c->res->headers->header('x-powered-by' => 'Mojolicious (Perl)');
     });
     #fin hook CORS
 
