@@ -202,4 +202,24 @@ sub desasociar_permiso {
     return $usuarios->desasociar_permiso($usuario_id, $permiso_id);
 }
 
+sub validar_correo_repetido{
+    my $self = shift;
+    my $correo = $self->param('correo');
+    my $model = 'MojoApp::Model::Usuarios';
+    my $usuarios= $model->new();
+    my $rpta = $usuarios->validar_correo_repetido($correo);
+        
+    $self->render(text => ("$rpta"));
+}
+
+sub validar_usuario_repetido{
+    my $self = shift;
+    my $usuario = $self->param('usuario');
+    my $model = 'MojoApp::Model::Usuarios';
+    my $usuarios= $model->new();
+    my $rpta = $usuarios->validar_usuario_repetido($usuario);
+        
+    $self->render(text => ("$rpta"));
+}
+
 1;

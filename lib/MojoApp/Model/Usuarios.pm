@@ -60,9 +60,9 @@ sub validar {
 
     while (my $ref = $sth->fetchrow_hashref()) {
         $rpta = $ref->{'cantidad'};
-        print("\n1\n");
-        print $rpta;
-        print("\n1\n");
+        #print("\n1\n");
+        #print $rpta;
+        #print("\n1\n");
     }
 
     $sth->finish;
@@ -186,6 +186,42 @@ sub desasociar_permiso {
     $sth->bind_param( 2, $permiso_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
     $sth->finish;
+}
+
+sub validar_correo_repetido {
+    my($self, $correo) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT COUNT(*) AS cantidad FROM usuarios WHERE correo = ?')
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $correo );
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my $rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        $rpta = $ref->{'cantidad'};
+    }
+
+    $sth->finish;
+
+    return $rpta;
+}
+
+sub validar_usuario_repetido {
+    my($self, $usuario) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT COUNT(*) AS cantidad FROM usuarios WHERE usuario = ?')
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario );
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my $rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        $rpta = $ref->{'cantidad'};
+    }
+
+    $sth->finish;
+
+    return $rpta;
 }
 
 1;
