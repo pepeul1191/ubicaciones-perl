@@ -52,6 +52,8 @@ sub startup {
     $r->get('/usuario/listar_permisos/:usuario_id')->to('usuario#listar_permisos');
     $r->get('/usuario/listar_roles/:usuario_id')->to('usuario#listar_roles');
     $r->post('/usuario/validar')->to('usuario#validar');
+    $r->post('/usuario/validar_correo_repetido')->to('usuario#validar_correo_repetido');
+    $r->post('/usuario/validar_usuario_repetido')->to('usuario#validar_usuario_repetido');
     $r->post('/usuario/asociar_permisos')->to('usuario#asociar_permisos');
     $r->post('/usuario/asociar_roles')->to('usuario#asociar_roles');
     
