@@ -25,6 +25,8 @@ sub startup {
     # Router
     my $r = $self->routes;
 
+    $r->get('/departamento/listar')->to('departamento_controller#listar');    
+
     $r->get('/estado_usuario/listar')->to('estado_usuario#listar');
 
     $r->get('/item/listar/menu/:nombreModulo')->to('item#menu');

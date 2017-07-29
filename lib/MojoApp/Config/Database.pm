@@ -3,11 +3,10 @@ use DBI;
 use utf8;
 binmode STDOUT, ":encoding(utf8)";
 
-
 sub new {
     my $class = shift;
     my $driver   = "SQLite";
-    my $database = "/home/pepe/Documentos/perl/accesos/db/db_accesos.db";
+    my $database = "/Users/pepevaldivia/Documents/perl/ubicaciones/db/db_ubicaciones.db";
     my $dsn = "DBI:$driver:dbname=$database";
     my $userid = "";
     my $password = "";
