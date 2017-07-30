@@ -24,44 +24,16 @@ sub startup {
 
     # Router
     my $r = $self->routes;
-
+    # departamento
     $r->get('/departamento/listar')->to('departamento_controller#listar');
+    $r->post('/departamento/guardar')->to('departamento_controller#guardar');
+    # distrito
     $r->get('/distrito/listar/:provincia_id')->to('distrito_controller#listar');
+    $r->get('/distrito/buscar')->to('distrito_controller#buscar');
+    $r->post('/distrito/guardar')->to('distrito_controller#guardar');
+    # provincia
     $r->get('/provincia/listar/:departamento_id')->to('provincia_controller#listar');
-
-    $r->get('/estado_usuario/listar')->to('estado_usuario#listar');
-
-    $r->get('/item/listar/menu/:nombreModulo')->to('item#menu');
-    $r->get('/item/listar_todos')->to('item#listar_todos');
-    $r->get('/item/listar/:subtitulo_id')->to('item#listar');
-    $r->post('/item/guardar')->to('item#guardar');
-
-    $r->get('/modulo/listar')->to('modulo#listar');
-    $r->post('/modulo/guardar')->to('modulo#guardar');
-
-    $r->get('/permiso/listar')->to('permiso#listar');
-    $r->get('/permiso/listar_asociados/:rol_id')->to('permiso#listar_asociados');
-    $r->post('/permiso/guardar')->to('permiso#guardar');
-
-    $r->get('/rol/listar')->to('rol#listar');
-    $r->post('/rol/guardar')->to('rol#guardar');
-    $r->post('/rol/ascociar_permisos')->to('rol#ascociar_permisos');
-
-    $r->get('/subtitulo/listar/:modulo_id')->to('subtitulo#listar');
-    $r->post('/subtitulo/guardar')->to('subtitulo#guardar');
-
-    $r->get('/usuario/listar')->to('usuario#listar');
-    $r->get('/usuario/listar_usuarios')->to('usuario#listar_usuarios');
-    $r->get('/usuario/listar_accesos/:usuario_id')->to('usuario#listar_accesos');
-    $r->get('/usuario/listar_permisos/:usuario_id')->to('usuario#listar_permisos');
-    $r->get('/usuario/listar_roles/:usuario_id')->to('usuario#listar_roles');
-    $r->post('/usuario/validar')->to('usuario#validar');
-    $r->post('/usuario/validar_correo_repetido')->to('usuario#validar_correo_repetido');
-    $r->post('/usuario/validar_usuario_repetido')->to('usuario#validar_usuario_repetido');
-    $r->post('/usuario/asociar_permisos')->to('usuario#asociar_permisos');
-    $r->post('/usuario/asociar_roles')->to('usuario#asociar_roles');
-    
-    $r->get('/demo')->to('demo-test#index');
+    $r->post('/provincia/guardar')->to('provincia_controller#guardar');
 }
 
 1;

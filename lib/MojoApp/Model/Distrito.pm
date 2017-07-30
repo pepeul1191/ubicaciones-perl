@@ -15,10 +15,28 @@ sub new {
 }
 
 sub listar {
-    my($self, $departamento_id) = @_;
-    my $sth = $self->{_dbh}->prepare('SELECT id, nombre FROM provincias WHERE departamento_id = ?;') 
+    my($self, $provincia_id) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT id, nombre FROM distritos WHERE provincia_id = ?;') 
         or die "prepare statement failed: $dbh->errstr()";
-    $sth->bind_param( 1, $departamento_id);
+    $sth->bind_param( 1, $provincia_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my @rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        push @rpta, $ref;
+    }
+
+    $sth->finish;
+
+    return @rpta;
+}
+
+sub buscar {
+    my($self, $nombre) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT id, nombre FROM vw_distrito_provincia_departamento WHERE nombre LIKE ? LIMIT 0,10;') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $nombre . "%");
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
     my @rpta;
@@ -33,10 +51,10 @@ sub listar {
 }
 
 sub crear {
-    my($self, $departamento_id, $nombre) = @_;
-    my $sth = $self->{_dbh}->prepare('INSERT INTO provincias (departamento_id, nombre) VALUES (?, ?)') 
+    my($self, $provincia_id, $nombre) = @_;
+    my $sth = $self->{_dbh}->prepare('INSERT INTO distritos (provincia_id, nombre) VALUES (?, ?)') 
         or die "prepare statement failed: $dbh->errstr()";
-    $sth->bind_param( 1, $departamento_id);
+    $sth->bind_param( 1, $provincia_id);
     $sth->bind_param( 2, $nombre);
     $sth->execute() or die "execution failed: $dbh->errstr()";
     
@@ -48,7 +66,7 @@ sub crear {
 
 sub editar {
     my($self, $id, $nombre) = @_;
-    my $sth = $self->{_dbh}->prepare('UPDATE provincias SET nombre = ? WHERE id = ?') 
+    my $sth = $self->{_dbh}->prepare('UPDATE distritos SET nombre = ? WHERE id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $nombre);
     $sth->bind_param( 2, $id);
@@ -59,7 +77,7 @@ sub editar {
 
 sub eliminar {
     my($self, $id) = @_;
-    my $sth = $self->{_dbh}->prepare('DELETE FROM provincias WHERE id = ?') 
+    my $sth = $self->{_dbh}->prepare('DELETE FROM distritos WHERE id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
