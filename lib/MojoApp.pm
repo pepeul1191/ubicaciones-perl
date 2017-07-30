@@ -25,7 +25,9 @@ sub startup {
     # Router
     my $r = $self->routes;
 
-    $r->get('/departamento/listar')->to('departamento_controller#listar');    
+    $r->get('/departamento/listar')->to('departamento_controller#listar');
+
+    $r->get('/provincia/listar/:departamento_id')->to('provincia_controller#listar');
 
     $r->get('/estado_usuario/listar')->to('estado_usuario#listar');
 

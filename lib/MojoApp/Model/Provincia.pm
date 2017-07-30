@@ -1,4 +1,4 @@
-package MojoApp::Model::Departamento;
+package MojoApp::Model::Provincia;
 use MojoApp::Config::Database;
 
 sub new {
@@ -15,9 +15,10 @@ sub new {
 }
 
 sub listar {
-    my($self) = @_;
-    my $sth = $self->{_dbh}->prepare('SELECT id, nombre FROM departamentos;') 
+    my($self, $departamento_id) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT id, nombre FROM provincias WHERE departamento_id = ?;') 
         or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $departamento_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
     my @rpta;
@@ -32,10 +33,11 @@ sub listar {
 }
 
 sub crear {
-    my($self, $nombre) = @_;
-    my $sth = $self->{_dbh}->prepare('INSERT INTO departamentos (nombre) VALUES (?)') 
+    my($self, $departamento_id, $nombre) = @_;
+    my $sth = $self->{_dbh}->prepare('INSERT INTO provincias (departamento_id, nombre) VALUES (?, ?)') 
         or die "prepare statement failed: $dbh->errstr()";
-    $sth->bind_param( 1, $nombre);
+    $sth->bind_param( 1, $departamento_id);
+    $sth->bind_param( 2, $nombre);
     $sth->execute() or die "execution failed: $dbh->errstr()";
     
     my $id_generated = $self->{_dbh}->last_insert_id(undef, undef, undef, undef );
@@ -45,21 +47,23 @@ sub crear {
 }
 
 sub editar {
-    my($self, $id, $nombre, $llave) = @_;
-    my $sth = $self->{_dbh}->prepare('UPDATE departamentos SET nombre = ? WHERE id = ?') 
+    my($self, $id, $nombre) = @_;
+    my $sth = $self->{_dbh}->prepare('UPDATE provincias SET nombre = ? WHERE id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $nombre);
     $sth->bind_param( 2, $id);
+
     $sth->execute() or die "execution failed: $dbh->errstr()";
     $sth->finish;
 }
 
 sub eliminar {
     my($self, $id) = @_;
-    my $sth = $self->{_dbh}->prepare('DELETE FROM departamentos WHERE id = ?') 
+    my $sth = $self->{_dbh}->prepare('DELETE FROM provincias WHERE id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
     $sth->finish;
 }
+
 1;
