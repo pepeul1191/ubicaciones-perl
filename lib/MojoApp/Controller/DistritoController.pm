@@ -31,6 +31,16 @@ sub buscar {
     $self->render(text => ("$json_text"));
 }
 
+sub nombre {
+    my $self = shift;
+    my $model = 'MojoApp::Model::Distrito';
+    my $distrito= $model->new();
+    my $distrito_id = $self->param('distrito_id');
+    my $rpta = $distrito->nombre($distrito_id);
+
+    $self->render(text => ($rpta));
+}
+
 sub guardar {
     my $self = shift;
     my $data = decode_json($self->param('data'));

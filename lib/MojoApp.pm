@@ -30,6 +30,7 @@ sub startup {
     # distrito
     $r->get('/distrito/listar/:provincia_id')->to('distrito_controller#listar');
     $r->get('/distrito/buscar')->to('distrito_controller#buscar');
+    $r->get('/distrito/nombre/:distrito_id')->to('distrito_controller#nombre');
     $r->post('/distrito/guardar')->to('distrito_controller#guardar');
     # provincia
     $r->get('/provincia/listar/:departamento_id')->to('provincia_controller#listar');
