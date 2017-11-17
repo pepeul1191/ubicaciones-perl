@@ -6,7 +6,7 @@ binmode STDOUT, ":encoding(utf8)";
 sub new {
     my $class = shift;
     my $driver   = "SQLite";
-    my $database = "/Users/pepevaldivia/Documents/perl/ubicaciones/db/db_ubicaciones.db";
+    my $database = "db/db_ubicaciones.db";
     my $dsn = "DBI:$driver:dbname=$database";
     my $userid = "";
     my $password = "";
